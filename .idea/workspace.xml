@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b843904b-b16d-4ad6-90f7-05cfcf706f62" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Task 8. FOO.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Administrator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Counter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FOOService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Voter.java" afterDir="false" />
+    <list default="true" id="b843904b-b16d-4ad6-90f7-05cfcf706f62" name="Changes" comment="Task 8">
+      <change afterPath="$PROJECT_DIR$/Test/FOOServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Administrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Counter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Counter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FOOService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FOOService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Signature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Signature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Voter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Voter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Практическое задание 8.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Практическое задание 8.docx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -61,22 +59,41 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RSAServiceTest">
-    <configuration name="RSAServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.FOOServiceTest">
+    <configuration name="FOOServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Task 8. FOO" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RSAServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="FOOServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RSAServiceTest.conversionPrivateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="FOOServiceTest.testCheckBlindSignatureByCounter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Task 8. FOO" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="FOOServiceTest" />
+      <option name="METHOD_NAME" value="testCheckBlindSignatureByCounter" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FOOServiceTest.testCheckSignatureByAdmin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Task 8. FOO" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="FOOServiceTest" />
+      <option name="METHOD_NAME" value="testCheckSignatureByAdmin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RSAServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Task 8. FOO" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="RSAServiceTest" />
-      <option name="METHOD_NAME" value="conversionPrivateTest" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -93,9 +110,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FOOServiceTest" />
+        <item itemvalue="JUnit.FOOServiceTest.testCheckBlindSignatureByCounter" />
+        <item itemvalue="JUnit.FOOServiceTest.testCheckSignatureByAdmin" />
         <item itemvalue="JUnit.RSAServiceTest" />
         <item itemvalue="JUnit.RSAServiceTest.conversionPublicTest" />
-        <item itemvalue="JUnit.RSAServiceTest.conversionPrivateTest" />
       </list>
     </recent_temporary>
   </component>
@@ -108,6 +127,14 @@
       <option name="presentableId" value="Default" />
       <updated>1699940427572</updated>
     </task>
+    <task id="LOCAL-00001" summary="Task 8">
+      <created>1700037315875</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1700037315875</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -120,5 +147,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Task 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Task 8" />
   </component>
 </project>

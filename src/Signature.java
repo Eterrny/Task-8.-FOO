@@ -1,7 +1,7 @@
 import java.math.BigInteger;
 
 public class Signature {
-    private final BigInteger S1, S2;
+    private BigInteger S1, S2;
     private final BigInteger h, n;
 
     public Signature(BigInteger S1, BigInteger S2, BigInteger h, BigInteger n) {
@@ -30,5 +30,9 @@ public class Signature {
     @Override
     public String toString() {
         return "(" + S1 + ", " + S2 + ")";
+    }
+
+    public void setS1(BigInteger s1){
+        this.S1 = s1;
     }
 }

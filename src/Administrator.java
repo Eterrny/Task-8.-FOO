@@ -1,7 +1,7 @@
 import java.math.BigInteger;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Administrator {
     private final BigInteger privateKey, publicKey, n;
@@ -10,6 +10,9 @@ public class Administrator {
 
     // private HashMap<PublicKey, Integer> voters = new HashMap<>();
     private ArrayList<VoterInfo> voters = new ArrayList<>();
+    private Set<Integer> votersWithAccess = new HashSet<>();
+    private int accessCnt = 0;
+
 
     private static class VoterInfo {
         public BigInteger key;
@@ -55,6 +58,13 @@ public class Administrator {
     }
 
     public void registrateVoter(Voter voter) {
+        if (votersWithAccess != null && votersWithAccess.size() != 0) {
+            if (votersWithAccess.contains(voter.getId())){
+                voters.add(new VoterInfo(voter.getPublicKey(), voter.getId()));
+                ++accessCnt;
+            }
+            return;
+        }
         voters.add(new VoterInfo(voter.getPublicKey(), voter.getId()));
     }
 
@@ -98,5 +108,17 @@ public class Administrator {
         }
         //System.out.println("Не нашлось голосующего.");
         return false;
+    }
+
+    public void addVoterWithAccess(int index) {
+        votersWithAccess.add(index);
+    }
+
+    public Set<Integer> getVotersWithAccess() {
+        return votersWithAccess;
+    }
+
+    public ArrayList<VoterInfo> getVoters() {
+        return voters;
     }
 }

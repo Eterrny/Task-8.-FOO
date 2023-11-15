@@ -10,11 +10,10 @@ import java.util.ArrayList;
 public class Counter {
     private final BigInteger privateKey;
     private final BigInteger publicKey;
-
     private ArrayList<String> encChoices = new ArrayList<>();
     private ArrayList<Integer> results = new ArrayList<>();
-
     private BigInteger adminKey;
+    private boolean errorSign = false;
 
     public Counter(int electedCount) {
         RSAService service = new RSAService();
@@ -44,6 +43,7 @@ public class Counter {
     public void takeEncChoiceSigned(String encChoice, BigInteger encChoiceSHA, BigInteger encChoiceSigned, BigInteger n) {
         if (!checkMessage(encChoiceSHA, encChoiceSigned, n)) {
             System.out.println("Счетчик получил бюллетень, которую регистратор не подписывал.");
+            this.errorSign = true;
             return;
         }
         encChoices.add(encChoice);
@@ -62,7 +62,8 @@ public class Counter {
         Integer choice = null;
         try {
             choice = Integer.parseInt(AESService.decrypt(encChoices.get(vIndex), aesKey, iv)) - 1;
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
+                 InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
             System.out.println("Ошибка в расшифровании одного из голосов: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("В качестве голоса получено не число.\n" + e.getMessage());
@@ -81,18 +82,19 @@ public class Counter {
         }
         System.out.println("\nРезультаты голосования в процентах:");
         for (int i = 0; i < results.size(); ++i) {
-            System.out.println("Избираемый #" + (i + 1) + ": " + String.format("%.2f", (double)results.get(i) / encChoices.size() * 100, 2) + "%");
+            System.out.println("Избираемый #" + (i + 1) + ": " + (results.get(i) != 0 ? String.format("%.2f", (double) results.get(i) / encChoices.size() * 100, 2) : 0) + "%");
         }
-        if (drawn(results.get(winner - 1))){
+        if (winner == -1 || drawn(results.get(winner - 1))) {
             System.out.println("По итогом выборов победитель не определен. Необходимо провести повторное голосавание.");
-        } else {
-            System.out.println("\nПобедитель выборов: избираемый #" + (winner));
+            return;
         }
+        System.out.println("\nПобедитель выборов: избираемый #" + (winner));
+
     }
 
     private boolean drawn(Integer max) {
         int cnt = 0;
-        for(int res : results) {
+        for (int res : results) {
             if (res == max) {
                 ++cnt;
             }
@@ -103,12 +105,16 @@ public class Counter {
     private int findWinner() {
         int max = 0;
         int winner = -1;
-        for(int i = 0; i < results.size(); ++i){
+        for (int i = 0; i < results.size(); ++i) {
             if (results.get(i) > max) {
                 max = results.get(i);
                 winner = i + 1;
             }
         }
         return winner;
+    }
+
+    public boolean checkErrorSign() {
+        return errorSign;
     }
 }

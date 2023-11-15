@@ -173,4 +173,12 @@ public class Voter {
         }
         return -1;
     }
+
+    public void changeSignature() {
+        this.s.setS1(BigInteger.TWO);
+    }
+
+    public void changeEncChoiceSigned() {
+        this.encChoiceSigned = BigInteger.TWO;
+    }
 }

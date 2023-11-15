@@ -1,8 +1,6 @@
-import java.awt.image.AreaAveragingScaleFilter;
 import java.math.BigInteger;
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Random;
 
 public class FOOService {
     private final int electedCount;
@@ -11,6 +9,12 @@ public class FOOService {
     private Counter counter;
 
     private Administrator admin;
+
+    private boolean withoutAccessTest = false;
+    private boolean step5Test = false;
+    private boolean step7Test = false;
+
+    private boolean errorCheckSignature = false;
 
     public FOOService(int voterCount, int electedCount) {
         for (int i = 0; i < voterCount; ++i) {
@@ -53,10 +57,17 @@ public class FOOService {
 
     private void step3() {
         this.admin = new Administrator();
-        this.setVotersModule();
+        if (withoutAccessTest) {
+            Random rnd = new Random();
+            int bound = rnd.nextInt(voters.size());
+            for(int i = 0; i < bound; ++i) {
+                admin.addVoterWithAccess(rnd.nextInt(voters.size()));
+            }
+        }
         admin.setCounterKey(counter.getPublicKey());
         counter.setAdminKey(admin.getPublicKey());
         for (Voter voter : voters) {
+            voter.setN(admin.getN());
             voter.setAdminKey(admin.getPublicKey());
             admin.registrateVoter(voter);
         }
@@ -68,6 +79,9 @@ public class FOOService {
                         Затем регистратор выкладывает список голосующих: %s
                         """,
                 admin.getPrivateKey(), admin.getPublicKey(), admin.printListOfVoters());
+        if (withoutAccessTest){
+            return;
+        }
         this.step4and5and6();
     }
 
@@ -96,9 +110,13 @@ public class FOOService {
                     voter.getR(),
                     voter.getEncChoiceBlind(),
                     voter.getSignature());
+            if (step5Test) {
+                voter.changeSignature();
+            }
             BigInteger encChoiceBlindSigned = admin.sendBallot(voter.getEncChoiceBlind(), voter.getSignature(), voter.getPublicKey());
             if (encChoiceBlindSigned == null) {
-                System.exit(1);
+                this.errorCheckSignature = true;
+                return;
             }
             System.out.printf("""
                             Регистратор:
@@ -125,21 +143,27 @@ public class FOOService {
         for (Voter voter : voters) {
 //            System.out.println("\n i = " + voter.getId() + "\ngetEncChoice = " + voter.getEncChoice() + "\ngetEncChoiceSHA = " + voter.getEncChoiceSHA()
 //                    + "\ngetEncChoiceSigned = " + voter.getEncChoiceSigned() + "\ngetN = " +  voter.getN());
+            if (step7Test) {
+                voter.changeEncChoiceSigned();
+            }
             counter.takeEncChoiceSigned(voter.getEncChoice(), voter.getEncChoiceSHA(), voter.getEncChoiceSigned(), voter.getN());
-            System.out.printf("""
-                            ---
-                            Голосующий %d отправляет счетчику:
-                               encChoice = %d
-                               encChoiceSigned = %d
-                                                
-                            Счетчик:
-                               Проверяет, что encChoiceSigned действительно подписал регистратор
-                               Помещает encChoice в специальный список в открытом доступе после оговоренного времени
-                            ---
-                            """,
-                    voter.getId(),
-                    voter.getEncChoiceSHA(),
-                    voter.getEncChoiceSigned());
+            if (!step7Test) {
+
+                System.out.printf("""
+                                ---
+                                Голосующий %d отправляет счетчику:
+                                   encChoice = %d
+                                   encChoiceSigned = %d
+                                                    
+                                Счетчик:
+                                   Проверяет, что encChoiceSigned действительно подписал регистратор
+                                   Помещает encChoice в специальный список в открытом доступе после оговоренного времени
+                                ---
+                                """,
+                        voter.getId(),
+                        voter.getEncChoiceSHA(),
+                        voter.getEncChoiceSigned());
+            }
         }
         System.out.println("\nГолосованиие окончено. Счетчик опубликовал список: " + counter.getEncChoices());
         this.step8();
@@ -153,9 +177,31 @@ public class FOOService {
         counter.publishResults();
     }
 
-    private void setVotersModule() {
-        for (Voter voter : voters) {
-            voter.setN(admin.getN());
-        }
+    public Administrator getAdmin() {
+        return admin;
+    }
+
+    public Counter getCounter() {
+        return counter;
+    }
+
+    public ArrayList<Voter> getVoters() {
+        return voters;
+    }
+
+    public void setWithoutAccessTest(boolean withoutAccessTest) {
+        this.withoutAccessTest = withoutAccessTest;
+    }
+
+    public void setStep5Test() {
+        this.step5Test = true;
+    }
+
+    public boolean checkErrorSignature() {
+        return errorCheckSignature;
+    }
+
+    public void setStep7Test() {
+        this.step7Test = true;
     }
 }
